@@ -1,19 +1,9 @@
-const express = require("express");
-const cors = require("cors");
-
-const app = express();
-
-// 👇 dokładnie pozwalamy tylko front-endowi
-app.use(cors({
-    origin: "https://frontendkalkulator-cpddbsbeb8a3bzez.polandcentral-01.azurewebsites.net"
-}));
-
-app.use(express.json());
-app.use(express.static("public"));
-
 app.post("/calculate", (req, res) => {
-    const { a, b, operator } = req.body;
+    res.setHeader("Access-Control-Allow-Origin", "https://frontendkalkulator-cpddbsbeb8a3bzez.polandcentral-01.azurewebsites.net");
+    res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
+    const { a, b, operator } = req.body;
     const x = parseFloat(a);
     const y = parseFloat(b);
 
@@ -28,6 +18,3 @@ app.post("/calculate", (req, res) => {
 
     res.json({ result });
 });
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log("Running on port", PORT));
