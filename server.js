@@ -3,9 +3,13 @@ const cors = require("cors");
 
 const app = express();
 
-app.use(cors());
+// 👇 dokładnie pozwalamy tylko front-endowi
+app.use(cors({
+    origin: "https://frontendkalkulator-cpddbsbeb8a3bzez.polandcentral-01.azurewebsites.net"
+}));
+
 app.use(express.json());
-app.use(express.static("public")); // 👈 FRONTEND
+app.use(express.static("public"));
 
 app.post("/calculate", (req, res) => {
     const { a, b, operator } = req.body;
