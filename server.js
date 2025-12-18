@@ -3,6 +3,17 @@ app.post("/calculate", (req, res) => {
     res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
+const corsOptions = {
+  origin: "https://frontendkalkulator-cpddbsbeb8a3bzez.polandcentral-01.azurewebsites.net",
+  methods: "GET,POST,OPTIONS",
+  allowedHeaders: "Content-Type"
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // obsługa preflight
+
+
+
     const { a, b, operator } = req.body;
     const x = parseFloat(a);
     const y = parseFloat(b);
