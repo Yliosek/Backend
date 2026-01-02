@@ -1,20 +1,36 @@
-app.post("/calculate", (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "https://frontendkalkulator-cpddbsbeb8a3bzez.polandcentral-01.azurewebsites.net");
-    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+const express = require("express");
+const cors = require("cors");
 
+const app = express();
+
+app.use(express.json());
+
+app.use(cors({
+    origin: "https://frontendkalkulator-cpddbsbeb8a3bzez.polandcentral-01.azurewebsites.net",
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type"]
+}));
+
+app.post("/calculate", (req, res) => {
     const { a, b, operator } = req.body;
+
     const x = parseFloat(a);
     const y = parseFloat(b);
 
     let result;
+
     switch (operator) {
         case "+": result = x + y; break;
         case "-": result = x - y; break;
         case "*": result = x * y; break;
         case "/": result = y !== 0 ? x / y : null; break;
-        default: return res.status(400).send("Błąd");
+        default:
+            return res.status(400).json({ error: "Nieznany operator" });
     }
 
     res.json({ result });
+});
+
+app.listen(process.env.PORT || 3000, () => {
+    console.log("Backend działa");
 });
